@@ -1,22 +1,48 @@
 <script setup>
 import { ref } from "vue";
 
-const showModal = ref(false);
+let showModal = ref(false);
 const newNote = ref("");
+const errorMessage = ref("");
+const notes = ref([]);
+
+function getRandomColor() {
+  const letters = "bcdef".split("");
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * letters.length)];
+  }
+  return color;
+}
+
+const addNote = () => {
+  errorMessage.value = "";
+  if (newNote.value.length < 8)
+    return (errorMessage.value = "mehr als 7 Buchstaben bitte!");
+  notes.value.push({
+    id: Math.floor(Math.random() * 1000000),
+    text: newNote.value,
+    date: new Date(),
+    backgroundColor: getRandomColor(),
+  });
+  showModal.value = false;
+  newNote.value = "";
+};
 </script>
 
 <template>
   <main>
     <div v-show="showModal" class="overlay">
       <div class="modal">
+        <span v-if="errorMessage">{{ errorMessage }}</span>
         <textarea
-          v-model="newNote"
+          v-model.trim="newNote"
           name="note"
           id="note"
           cols="30"
           rows="10"
         ></textarea>
-        <button>Add Note</button>
+        <button @click="addNote">Add Note</button>
         <button class="close" @click="showModal = false">Close</button>
       </div>
     </div>
@@ -26,19 +52,18 @@ const newNote = ref("");
         <button @click="showModal = true">+</button>
       </header>
       <div class="cards-container">
-        <div class="card">
+        <div
+          class="card"
+          :style="{ backgroundColor: note.backgroundColor }"
+          v-for="note in notes"
+          :key="note.id"
+        >
           <p class="main-text">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam at
-            cupiditate et!
+            {{ note.text }}
           </p>
-          <p class="date">05.10.2023</p>
-        </div>
-        <div class="card">
-          <p class="main-text">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam at
-            cupiditate et!
+          <p class="date">
+            {{ note.date.toLocaleDateString("de-DE") }}
           </p>
-          <p class="date">05.10.2023</p>
         </div>
       </div>
     </div>
@@ -100,6 +125,10 @@ textarea {
   font-size: inherit;
 }
 
+.modal span {
+  color: indianred;
+}
+
 .modal button {
   padding: 10px 20px;
   font-size: 20px;
@@ -131,7 +160,7 @@ header button {
 .card {
   width: 225px;
   height: 225px;
-  background-color: chocolate;
+  //background-color: chocolate;
   padding: 10px;
   border-radius: 15px;
   display: flex;
