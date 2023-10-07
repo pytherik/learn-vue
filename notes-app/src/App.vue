@@ -51,7 +51,7 @@ const addNote = () => {
         <h1>Notes</h1>
         <button @click="showModal = true">+</button>
       </header>
-      <div class="cards-container">
+      <div class="car-list">
         <div
           class="card"
           :style="{ backgroundColor: note.backgroundColor }"
@@ -82,7 +82,7 @@ main {
   margin: 0 auto;
 }
 
-.cards-container {
+.car-list {
   display: flex;
   flex-wrap: wrap;
 }

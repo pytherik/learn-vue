@@ -12,7 +12,7 @@
         <h1>Notes</h1>
         <button>+</button>
       </header>
-      <div class="cards-container">
+      <div class="car-list">
         <div class="card">
           <p class="main-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente quasi corporis amet perspiciatis, libero est!</p>
           <p class="date">04/27/6853</p>
@@ -80,7 +80,7 @@
     font-weight: bold;
   }
 
-  .cards-container {
+  .car-list {
     display: flex;
     flex-wrap: wrap;
   }
