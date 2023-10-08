@@ -1,8 +1,7 @@
 <script setup>
-import {defineProps, ref} from "vue";
+import {defineProps} from "vue";
 
-const props = defineProps(['question']);
-const question = ref(props.question)
+const {question} = defineProps(['question']);
 console.log(question.value);
 </script>
 

@@ -1,8 +1,8 @@
 <script setup>
-import {defineProps, ref} from "vue";
+import {defineProps, toRefs} from "vue";
 
 const props = defineProps(['question']);
-const question = ref(props.question)
+const {question} = toRefs(props);
 console.log(question.value);
 </script>
 
@@ -13,7 +13,9 @@ console.log(question.value);
     </h1>
   </div>
   <div class="options-container">
-    <div class="option" v-for="option in question.options" :key="option.id">
+    <div class="option"
+         v-for="option in question.options"
+         :key="option.id">
       <p class="option-label">{{ option.label }}</p>
       <div class="option-value">
         <p>{{ option.text }}</p>
