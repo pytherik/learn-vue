@@ -10,7 +10,7 @@ const questionStatus = ref(props.questionStatus);
   <header>
     <h4>Question {{ questionStatus }}</h4>
     <div class="bar">
-<!--      <div class="completion" :style="{width: `${100/question.options.length * question.id}%`}"></div>-->
+<!--      <div class="completion" :style="{width:"></div>-->
     </div>
   </header>
 </template>

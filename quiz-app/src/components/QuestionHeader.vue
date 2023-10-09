@@ -1,16 +1,15 @@
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, toRefs } from "vue";
 
-const props = defineProps(['questionStatus']);
-const questionStatus = ref(props.questionStatus);
-
+const props = defineProps(["questionStatus", "percentage"]);
+const { questionStatus, percentage } = toRefs(props);
 </script>
 
 <template>
   <header>
     <h4>Question {{ questionStatus }}</h4>
     <div class="bar">
-<!--      <div class="completion" :style="{width: `${100/question.options.length * question.id}%`}"></div>-->
+      <div class="completion" :style="{ width: percentage }"></div>
     </div>
   </header>
 </template>
@@ -35,6 +34,4 @@ header h4 {
   width: 0%;
   background-color: bisque;
 }
-
-
 </style>

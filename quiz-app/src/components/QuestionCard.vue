@@ -1,9 +1,11 @@
 <script setup>
-import {defineProps, toRefs} from "vue";
+import { defineProps, defineEmits, toRefs } from "vue";
 
-const props = defineProps(['question']);
-const {question} = toRefs(props);
-console.log(question.value);
+const emit = defineEmits(["selectOption"]);
+const props = defineProps(["question"]);
+const { question } = toRefs(props);
+
+const validateAnswer = (isCorrect) => emit("selectOption", isCorrect);
 </script>
 
 <template>
@@ -13,16 +15,18 @@ console.log(question.value);
     </h1>
   </div>
   <div class="options-container">
-    <div class="option"
-         v-for="option in question.options"
-         :key="option.id">
+    <div
+      class="option"
+      v-for="option in question.options"
+      :key="option.id"
+      @click="validateAnswer(option.isCorrect)"
+    >
       <p class="option-label">{{ option.label }}</p>
       <div class="option-value">
         <p>{{ option.text }}</p>
       </div>
     </div>
   </div>
-
 </template>
 
 <style scoped>
