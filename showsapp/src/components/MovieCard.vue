@@ -1,16 +1,16 @@
 <script setup>
 import {defineProps, toRefs} from "vue";
 
-const props = defineProps(['searchResult'])
-const {searchResult} = toRefs(props);
+const props = defineProps(['title', 'image'])
+const {title, image} = toRefs(props);
 </script>
 
 <template>
-  <NCard :title="searchResult.Title">
+  <NCard :title="title">
     <template #cover>
-      <img :src="searchResult.Poster" alt="rand">
+      <img :src="image" alt="rand">
     </template>
-      <h3>{{ searchResult.Year }}</h3>
+    <slot></slot>
   </NCard>
 </template>
 

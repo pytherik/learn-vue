@@ -1,19 +1,22 @@
 <script setup>
 import BreakingBadCards from "@/components/BreakingBadCards.vue";
+import RickMortyCards from "@/components/RickMortyCards.vue";
+import HeroHeader from "@/components/HeroHeader.vue";
+import {ref} from "vue";
+import BreakingBadSuspense from "@/components/BreakingBadSuspense.vue";
+
+const isMovies = ref(true);
 </script>
 
 <template>
   <main>
-    <h1>HERO</h1>
-    <Suspense>
-      <template #default>
-        <BreakingBadCards/>
-      </template>
-      <template #fallback>
-        <div>
-          <h3>Loading...</h3>
-        </div>
-      </template>
-    </Suspense>
+   <HeroHeader :isMovies="isMovies"
+                @selectShow="isMovies=!isMovies"/>
+    <BreakingBadSuspense v-if="isMovies"/>
+    <RickMortyCards v-else/>
   </main>
 </template>
+
+<style scoped>
+
+</style>

@@ -12,16 +12,23 @@ const page = ref(1);
 
 let response = await axios.get(`https://www.omdbapi.com/?apikey=${KEY.key}&s=${searchKeyword.value}&page=${page.value}`)
 
-watch(page, async () => {
-  page.value = (totalResults.value - page.value * 10 <= -10) ? page.value - 1: page.value < 1 ? page.value +1: page.value;
-  response = await axios.get(`https://www.omdbapi.com/?apikey=${KEY.key}&s=${searchKeyword.value}&page=${page.value}`)
-  searchResults.value = response.data.Search;
-  totalResults.value = response.data.totalResults;
-  console.log(searchResults.value);
-})
-
 searchResults.value = response.data.Search;
 totalResults.value = response.data.totalResults;
+
+watch(page, async () => {
+  page.value = (totalResults.value - page.value * 10 <= -10)
+      ? page.value - 1
+      : page.value < 1
+          ? page.value +1
+          : page.value;
+
+  response = await axios.get(`https://www.omdbapi.com/?apikey=${KEY.key}&s=${searchKeyword.value}&page=${page.value}`)
+
+  searchResults.value = response.data.Search;
+  totalResults.value = response.data.totalResults;
+  // console.log(searchResults.value);
+})
+
 </script>
 
 <template>
@@ -30,7 +37,10 @@ totalResults.value = response.data.totalResults;
       <!--     <MovieCard :searchResults="searchResults"/>-->
       <MovieCard v-for="searchResult in searchResults"
                  :key="searchResult.imdbID"
-                 :searchResult="searchResult"/>
+                 :title="searchResult.Title"
+                 :image="searchResult.Poster">
+        <h3>{{ searchResult.Year }}</h3>
+      </MovieCard>
     </div>
     <div class="button-container">
       <button @click="page--">&lt;</button>
