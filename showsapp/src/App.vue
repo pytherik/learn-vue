@@ -10,10 +10,13 @@ const isMovies = ref(true);
 
 <template>
   <main>
-   <HeroHeader :isMovies="isMovies"
+    <HeroHeader :isMovies="isMovies"
                 @selectShow="isMovies=!isMovies"/>
-    <BreakingBadSuspense v-if="isMovies"/>
-    <RickMortyCards v-else/>
+    <!--    <BreakingBadSuspense v-if="isMovies"/>-->
+    <!--    <RickMortyCards v-else/>-->
+    <KeepAlive>
+      <Component :is="isMovies ? BreakingBadSuspense : RickMortyCards"/>
+    </KeepAlive>
   </main>
 </template>
 

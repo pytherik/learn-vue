@@ -60,3 +60,51 @@ severel args including the `$event` obj. ('$event' is mandatory)
 ```html
 <button @click="handleMe(value, $event)">Send value inc event</button>
 ```
+# Slots
+
+some child component
+```js
+<template>
+  <h1>Slots</h1>
+  <p>
+    Slots can obtain any information from any  
+     parent component!
+  </p>
+  <slot>slot without a name is the #default</slot>
+  <slot name="slot2">
+    when information is sent to a slot, this
+    content get overridden!
+  </slot>
+</template>
+```
+
+some parent component
+```angular2html
+<template>
+  <h1>How slots are used by a parent!</h1>
+  <template #default>
+  <div>
+    <p>this content goes to the unnamed slot</p>
+  </div>
+</template>
+<template #slot2>
+  <p>this content goes to slot 'slot2'</p>     
+</template>
+</template>
+```
+## Suspend
+
+these built in slots provide the functionality for  
+&lt;Suspend&gt;
+```angular2html
+<template>
+<Suspend>
+  <template #default>
+    <p>load external content</p>
+  </template>
+  <template #fallback>
+    <p>loader can be displayed while loading</p>
+  </template>
+</Suspend>
+</template>
+```
