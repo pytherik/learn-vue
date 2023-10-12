@@ -1,14 +1,19 @@
 <script setup>
-
+//info example composables, prop-drilling
 import ChildComponent from "@/components/ChildComponent.vue";
-import {defineProps} from "vue";
+import {provide, ref, toRefs} from "vue";
 import useNames from "@/composables/useNames";
 
-const props = defineProps(['numbers'])
-const {numbers} = props
-const {moreNames, addName} = useNames();
+const props = defineProps(['numbers']);
+const {numbers} = toRefs(props);
 
+const {moreNames, addName} = useNames();
 addName('Franzi');
+
+const providedNumbers =ref([42, 23, 666]);
+provide("providedNumbers", providedNumbers);
+
+
 </script>
 
 <template>

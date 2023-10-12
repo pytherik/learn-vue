@@ -1,9 +1,11 @@
 <script setup>
-import {defineProps, inject} from "vue";
+import {defineProps, inject, toRefs} from "vue";
 
 const props = defineProps(['numbers'])
-const {numbers} = props
-const names = inject("names")
+const {numbers} = toRefs(props);
+
+const names = inject("names"); //info provided in App.vue
+
 
 const addName = (name) => {
   names.value.push(name);

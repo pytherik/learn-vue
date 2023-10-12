@@ -1,9 +1,12 @@
 import {defineStore} from "pinia";
 
-export const useNamesStore = defineStore('storeNames', {
+export const useNamesStore = defineStore('mynames', {
   state: () => {
     return {
-      namesStore: ['Jon', 'Jane', 'Adam', 'Eva']
+      names: ['Jon', 'Jane', 'Adam', 'Eva']
     }
+  },
+  actions: {
+    addMyName(name) { this.names.push(name)}
   }
 })
