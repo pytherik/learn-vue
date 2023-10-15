@@ -6,10 +6,11 @@ export const useUserStore = defineStore('users', () => {
   const user = ref(null);
   const errorMessage = ref("");
   const loading = ref(false);
+  const loadingUser = ref(false);
 
   const handleLogin = async (credentials) => {
     const {email, password} = credentials;
-    if(!password.length) {
+    if (!password.length) {
       return errorMessage.value = "Password cannot be empty";
     }
 
@@ -20,7 +21,7 @@ export const useUserStore = defineStore('users', () => {
       password
     })
 
-    if(error) {
+    if (error) {
       loading.value = false;
       return errorMessage.value = "Something went wrong..."
     }
@@ -79,17 +80,18 @@ export const useUserStore = defineStore('users', () => {
         .select()
         .eq('username', username)
         .single();
-    
-    if(userWithUsername) {
+
+    if (userWithUsername) {
       loading.value = false;
       return errorMessage.value = 'Username already taken!'
-    };
+    }
+    ;
 
     const {error} = await supabase.auth.signUp({
       email,
       password
     })
-    if(error) {
+    if (error) {
       loading.value = false;
       return errorMessage.value = error.message;
     }
@@ -118,11 +120,11 @@ export const useUserStore = defineStore('users', () => {
   }
 
   const getUser = async () => {
-    loading.value = true;
+    loadingUser.value = true;
     const {data} = await supabase.auth.getUser();
 
-    if(!data.user) {
-      loading.value = false;
+    if (!data.user) {
+      loadingUser.value = false;
       return user.value = null;
     }
     const {data: userWithEmail} = await supabase
@@ -136,7 +138,7 @@ export const useUserStore = defineStore('users', () => {
       email: userWithEmail.email,
       id: userWithEmail.id
     }
-    loading.value = false;
+    loadingUser.value = false;
   }
 
   const clearErrorMessage = () => {
@@ -147,6 +149,7 @@ export const useUserStore = defineStore('users', () => {
     user,
     errorMessage,
     loading,
+    loadingUser,
     handleLogin,
     handleSignup,
     handleLogout,
