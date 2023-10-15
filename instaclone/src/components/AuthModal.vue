@@ -29,12 +29,16 @@ const clearUserCredentialsInput = () => {
 const handleOk = async e => {
   if (!props.isLogin) {
     await userStore.handleSignup(userCredentials);
-    if (user.value) {
-      open.value = false;
-      clearUserCredentialsInput();
-    }
   } else {
-      userStore.handleLogin(userCredentials)
+    await userStore.handleLogin({
+      email: userCredentials.email,
+      password: userCredentials.password
+    })
+  }
+  if (user.value) {
+    open.value = false;
+    props.isLogin = true;
+    clearUserCredentialsInput();
   }
 };
 

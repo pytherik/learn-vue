@@ -4,11 +4,14 @@ import Container from "@/components/Container.vue";
 import {ref} from "vue";
 import AuthModal from "@/components/AuthModal.vue";
 import {useRouter} from "vue-router";
+import {useUserStore} from "@/stores/users";
 
 const searchUsername = ref("");
 const isAuthenticated = ref(false);
 const router = useRouter();
-
+const userStore = useUserStore();
+console.log(userStore.user);
+if(userStore.user) isAuthenticated.value = true;
 const onSearch = () => {
   if(searchUsername) {
     router.push(`/profile/${searchUsername.value}`);

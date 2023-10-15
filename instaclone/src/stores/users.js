@@ -12,13 +12,34 @@ export const useUserStore = defineStore('users', () => {
     if(!password.length) {
       return errorMessage.value = "Password cannot be empty";
     }
+
     loading.value = true;
-    const res = await supabase.auth.signInWithPassword({
+
+    const {error, data} = await supabase.auth.signInWithPassword({
       email,
       password
     })
-    
-    console.log(res);
+
+    if(error) {
+      loading.value = false;
+      return errorMessage.value = "Something went wrong..."
+    }
+
+    const {data: exitstingUser} = await supabase
+        .from("users")
+        .select()
+        .eq('email', email)
+        .single();
+
+    user.value = {
+      id: exitstingUser.id,
+      email: exitstingUser.email,
+      username: exitstingUser.username
+    }
+
+    console.log(data);
+    loading.value = false;
+    errorMessage.value = "";
   }
 
   const handleSignup = async (credentials) => {
@@ -33,17 +54,17 @@ export const useUserStore = defineStore('users', () => {
     //       );
     // };
     //
-    const validateEmail = (email) => {
-      return true;
-    };
+    // const validateEmail = (email) => {
+    //   return true;
+    // };
+    // if (!validateEmail(email.value)) {
+    //   return errorMessage.value = "No valid email!"
+    // }
 
     if (username.length < 4) {
       return errorMessage.value = "Username is too short";
     }
 
-    if (!validateEmail(email.value)) {
-      return errorMessage.value = "No valid email!"
-    }
 
     if (password.length < 6) {
       return errorMessage.value = "Passwort ist zu short";
@@ -96,12 +117,40 @@ export const useUserStore = defineStore('users', () => {
   const handleLogout = () => {
   }
 
-  const getUser = () => {
+  const getUser = async () => {
+    loading.value = true;
+    const {data} = await supabase.auth.getUser();
+
+    if(!data.user) {
+      loading.value = false;
+      return user.value = null;
+    }
+    const {data: userWithEmail} = await supabase
+        .from("users")
+        .select()
+        .eq("email", data.user.email)
+        .single()
+
+    user.value = {
+      username: userWithEmail.username,
+      email: userWithEmail.email,
+      id: userWithEmail.id
+    }
+    loading.value = false;
   }
 
   const clearErrorMessage = () => {
     errorMessage.value = "";
   }
 
-  return {user, errorMessage, loading, handleLogin, handleSignup, handleLogout, getUser, clearErrorMessage}
+  return {
+    user,
+    errorMessage,
+    loading,
+    handleLogin,
+    handleSignup,
+    handleLogout,
+    getUser,
+    clearErrorMessage
+  }
 })
