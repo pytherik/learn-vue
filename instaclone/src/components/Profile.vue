@@ -25,10 +25,10 @@ import ImageGallery from "@/components/ImageGallery.vue";
 
 <style scoped>
 .profile-container {
-  background: #5F9EA033;
+  /*background: #5F9EA033;*/
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /*align-items: center;*/
   padding: 20px 0;
 }
 </style>

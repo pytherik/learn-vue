@@ -1,7 +1,7 @@
 <script setup>
 
 const { posts } = defineProps(['posts'])
-console.log(posts);
+
 </script>
 
 <template>

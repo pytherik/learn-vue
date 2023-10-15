@@ -19,7 +19,6 @@ const onSearch = () => {
 
 <template>
   <a-layout>
-
     <a-layout-header>
       <Container>
         <div class="nav-container">
