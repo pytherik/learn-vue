@@ -7,6 +7,8 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterLink to="/">Home</RouterLink>
     <RouterLink to="/about">About</RouterLink>
     <RouterLink to="/chart">Chart</RouterLink>
+    <RouterLink to="/d3">d3.js</RouterLink>
+    <RouterLink to="/pie">Pie</RouterLink>
   </nav>
   <RouterView />
 </template>

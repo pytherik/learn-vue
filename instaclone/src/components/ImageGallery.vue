@@ -1,12 +1,18 @@
 <script setup>
 
 const { posts } = defineProps(['posts'])
+const baseUrl = 'https://sgpmbbhdxeelsvlojhsc.supabase.co/storage/v1/object/public/images/'
 
 </script>
 
 <template>
   <div class="image-gallery-container">
-    <img v-for="post in posts" :key="posts.id" :src="post.image" :alt="post.id">
+    <div class="card" v-for="post in posts">
+    <img :key="posts.id"
+         :src="`${baseUrl}${post.url}`"
+         :alt="post.id">
+    <span>{{ post.caption }}</span>
+    </div>
   </div>
 </template>
 
@@ -17,8 +23,15 @@ const { posts } = defineProps(['posts'])
   flex-wrap: wrap;
 }
 
+.card {
+  display: flex;
+  flex-direction: column;
+
+}
+
 img{
   margin: 5px;
   width: 200px;
 }
+
 </style>

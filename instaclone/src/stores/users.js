@@ -81,13 +81,14 @@ export const useUserStore = defineStore('users', () => {
         .eq('username', username)
         .single();
 
+
     if (userWithUsername) {
       loading.value = false;
       return errorMessage.value = 'Username already taken!'
     }
-    ;
 
-    const {error} = await supabase.auth.signUp({
+
+    const { error } = await supabase.auth.signUp({
       email,
       password
     })
@@ -101,7 +102,7 @@ export const useUserStore = defineStore('users', () => {
       email
     })
 
-    const {data: newUser} = await supabase
+    const { data: newUser } = await supabase
         .from("users")
         .select()
         .eq('email', email)
@@ -116,7 +117,9 @@ export const useUserStore = defineStore('users', () => {
     loading.value = false;
   }
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    user.value = null;
   }
 
   const getUser = async () => {
@@ -127,6 +130,9 @@ export const useUserStore = defineStore('users', () => {
       loadingUser.value = false;
       return user.value = null;
     }
+
+    if (!data) return user.value = null;
+
     const {data: userWithEmail} = await supabase
         .from("users")
         .select()

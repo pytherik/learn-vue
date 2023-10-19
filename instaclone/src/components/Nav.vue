@@ -20,6 +20,15 @@ const onSearch = () => {
     searchUsername.value = "";
   }
 };
+
+const goToUsersProfile = () => {
+  router.push(`/profile/${user.value.username}`)
+}
+
+const handleLogout = () => {
+  userStore.handleLogout();
+}
+
 </script>
 
 <template>
@@ -27,7 +36,7 @@ const onSearch = () => {
     <a-layout-header>
       <Container>
         <div class="nav-container">
-          <div class="right-content">
+          <div class="flex-center">
             <RouterLink to="/">instaclone</RouterLink>
             <a-input-search
                 v-model:value="searchUsername"
@@ -36,14 +45,14 @@ const onSearch = () => {
                 @search="onSearch"
             />
           </div>
-          <div class="content" v-if="!loadingUser">
-            <div class="left-content" v-if="!user">
+          <div class="flex-center" v-if="!loadingUser">
+            <div class="flex-center" v-if="!user">
               <AuthModal :isLogin="false"/>
               <AuthModal :isLogin="true"/>
             </div>
-            <div class="left-content" v-else>
-              <a-button class="btn" type="primary">Profile</a-button>
-              <a-button class="btn" type="primary">Logout</a-button>
+            <div class="flex-center" v-else>
+              <a-button class="btn" type="primary" @click="goToUsersProfile">Profile</a-button>
+              <a-button class="btn" type="primary" @click="handleLogout">Logout</a-button>
             </div>
           </div>
         </div>
@@ -53,32 +62,24 @@ const onSearch = () => {
 </template>
 
 <style scoped>
+
 .nav-container {
   display: flex;
   justify-content: space-between;
 
 }
 
-.content {
+.flex-center {
   display: flex;
   align-items: center;
 }
 
-.right-content {
-  display: flex;
-  align-items: center;
-}
-
-.right-content a {
+a {
   margin: 0 10px;
-}
-
-.left-content {
-  display: flex;
-  align-items: center;
 }
 
 .btn {
   margin: 0 5px;
+
 }
 </style>
