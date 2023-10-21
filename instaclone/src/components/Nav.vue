@@ -45,6 +45,12 @@ const handleLogout = () => {
                 @search="onSearch"
             />
           </div>
+          <div v-if="user">
+            Logged in as {{ user.username }}
+          </div>
+          <div v-else>
+            Please sign in or create an account
+          </div>
           <div class="flex-center" v-if="!loadingUser">
             <div class="flex-center" v-if="!user">
               <AuthModal :isLogin="false"/>

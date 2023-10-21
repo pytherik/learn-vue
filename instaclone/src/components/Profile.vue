@@ -1,86 +1,96 @@
 <script setup>
 
-import { onMounted, ref } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import Container from "@/components/Container.vue";
 import Userbar from "@/components/Userbar.vue";
 import ImageGallery from "@/components/ImageGallery.vue";
 import { useRoute } from "vue-router";
 import { supabase } from "@/supabase";
-// import { useApiStore } from "@/stores/api";
+import { useApiStore } from "@/stores/api";
+import { useUserStore } from "@/stores/users";
+import { storeToRefs } from "pinia";
 
-// const api = useApiStore();
-
-// const fetchFromApi = async () => {
-//   user.value = await api.getUserByUsername(username);
-//   posts.value = await api.getPostsByOwnerId(user.value.id);
-// }
+const api = useApiStore();
 
 const route = useRoute();
 const { username } = route.params;
+
+const userStore = useUserStore();
+const { user: userLoggedIn } = storeToRefs(userStore);
+
 const user = ref(null);
-
 const posts = ref([]);
+const isFollowed = ref(false);
 
+const userInfo = reactive({
+  posts: 0,
+  followers: 0,
+  following: 0
+})
+
+const loading = ref(false);
 
 const addNewPost = (post) => {
   posts.value.unshift(post);
 }
-const fetchUserData = async () => {
-  try {
-    const { data: userData } = await supabase
-        .from("users")
-        .select()
-        .eq("username", username)
-        .single()
-    user.value = userData;
-    console.log(user.value);
-  } catch (error) {
-    return console.log(error);
+
+const fetchFromApi = async () => {
+  loading.value = true;
+  user.value = await api.getUserByUsername(username);
+  if (!user.value) {
+    loading.value = false;
+    return null;
   }
-  
-  try {
-    const { data: postsData } = await supabase
-        .from("posts")
-        .select()
-        .eq("owner_id", user.value.id)
-    posts.value = postsData;
-    console.log(posts.value);
-  } catch (error) {
-    console.log(error);
-  }
+  posts.value = await api.getPostsByOwnerId(user.value.id);
+
+  userInfo.posts = posts.value.length;
+
+  const isFollowing = await api.getAllFollowedByUser(user.value.id);
+  if (isFollowing) userInfo.following = isFollowing.length;
+
+  const hasFollowers = await api.getAllFollowersForUser(user.value.id);
+  if (hasFollowers) userInfo.followers = hasFollowers.length;
+
+  isFollowed.value = await api.getIsAlreadyFollowedBy(userLoggedIn.value.id, user.value.id);
+
+  loading.value = false;
 }
 
 onMounted(() => {
-  // fetchFromApi();
-  fetchUserData();  
+  fetchFromApi();
 })
-console.log(user.value);
 
 </script>
 
 <template>
   <Container>
-    <div class="profile-container">
+    <div class="profile-container" v-if="!loading">
       <Userbar :key="$route.params"
-               username="erik berndt"
                :user="user"
                :addNewPost="addNewPost"
-               :userInfo="{
-        posts: 4,
-        followers: 3,
-        following: 2134
-      }"/>
+               :isFollowed="isFollowed"
+               :userInfo="userInfo"/>
       <ImageGallery :posts="posts" />
+    </div>
+    <div class="spinner" v-else>
+      <a-spin />
     </div>
   </Container>
 </template>
 
 <style scoped>
+
 .profile-container {
-  /*background: #5F9EA033;*/
   display: flex;
   flex-direction: column;
-  /*align-items: center;*/
   padding: 20px 0;
 }
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
 </style>

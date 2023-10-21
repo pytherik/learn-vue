@@ -38,7 +38,6 @@ export const useUserStore = defineStore('users', () => {
       username: exitstingUser.username
     }
 
-    console.log(data);
     loading.value = false;
     errorMessage.value = "";
   }

@@ -1,15 +1,14 @@
 <script setup>
 
 const { posts } = defineProps(['posts'])
-const baseUrl = 'https://sgpmbbhdxeelsvlojhsc.supabase.co/storage/v1/object/public/images/'
-
+const { VITE_BASE_PHOTO_URL } = import.meta.env;
 </script>
 
 <template>
   <div class="image-gallery-container">
     <div class="card" v-for="post in posts">
     <img :key="posts.id"
-         :src="`${baseUrl}${post.url}`"
+         :src="`${VITE_BASE_PHOTO_URL}${post.url}`"
          :alt="post.id">
     <span>{{ post.caption }}</span>
     </div>
