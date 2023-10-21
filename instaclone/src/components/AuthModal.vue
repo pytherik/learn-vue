@@ -47,6 +47,7 @@ const handleCancel = () => {
   open.value = false;
 }
 const title = props.isLogin ? 'Signin' : 'Signup';
+
 </script>
 
 <template>

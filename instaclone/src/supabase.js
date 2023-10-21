@@ -1,4 +1,4 @@
-import {ACCESS_DATA} from "../config";
+import {ACCESS_DATA} from "./config";
 import {createClient} from "@supabase/supabase-js";
 
 
