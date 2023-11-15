@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { vAutofocus } from '@/directives/vAutofocus'
-import { useCounter } from '@/use/useCounter'
+import { useCounterStore } from '@/stores/counter'
+import { storeToRefs } from 'pinia'
 
-const { countData, oddOrEven, increaseCounter, decreaseCounter } = useCounter()
+const counterStore = useCounterStore()
+const { count, title } = storeToRefs(counterStore)
+const { increaseCounter, decreaseCounter, oddOrEven } = counterStore
+
 const appTitle = ref('')
 appTitle.value = 'Super Zähler App'
 const appTitleRef = ref(null)
@@ -12,20 +16,20 @@ const appTitleRef = ref(null)
 <template>
   <div class="home">
     <h1 ref="appTitleRef">{{ appTitle }}</h1>
-    <h2>{{ countData.title }}</h2>
+    <h2>{{ title }}</h2>
     <div>
       <button class="btn" @click="decreaseCounter(2)">--</button>
       <button class="btn" @click="decreaseCounter(1)">-</button>
-      <span class="counter">{{ countData.count }}</span>
+      <span class="counter">{{ count }}</span>
       <button class="btn" @click="increaseCounter(1)">+</button>
       <button class="btn" @click="increaseCounter(2)">++</button>
     </div>
     <div class="odd-even">
-      <p>Dies ist eine {{ oddOrEven }} Zahl</p>
+      <p>Dies ist eine {{ oddOrEven() }} Zahl</p>
     </div>
     <div class="title-input">
       <label for="title">Gib Titelnamen ein:</label><br />
-      <input id="title" type="text" v-model="countData.title" v-autofocus />
+      <input id="title" type="text" v-model="title" v-autofocus />
     </div>
   </div>
 </template>
@@ -36,7 +40,8 @@ const appTitleRef = ref(null)
 }
 
 .btn {
-  font-size: 3rem;
+  font-size: 2rem;
+  font-weight: bold;
   width: 4rem;
   height: 4rem;
   margin: 0 1rem;
@@ -45,7 +50,7 @@ const appTitleRef = ref(null)
 
 .counter {
   font-size: 2rem;
-  padding: 0.6rem 3rem 0.6rem;
+  padding: 0.4rem 3rem 0.6rem;
   border: 1px solid #aaa;
   border-radius: 5px;
 }

@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { vAutofocus } from '@/directives/vAutofocus'
 import { nextTick, ref } from 'vue'
-import { useCounter } from '@/use/useCounter'
+import { useCounterStore } from '@/stores/counter'
+import { storeToRefs } from 'pinia'
 
+const counterStore = useCounterStore()
+const { increaseCounter, oddOrEven } = counterStore
+const { count } = storeToRefs(counterStore)
 const posts = ref([
   {
     id: 1,
@@ -31,8 +35,6 @@ const posts = ref([
   }
 ])
 
-const { countData, increaseCounter, oddOrEven } = useCounter()
-
 nextTick(() => {
   increaseCounter(1)
 })
@@ -47,8 +49,8 @@ nextTick(() => {
       </li>
     </ul>
     <textarea cols="20" rows="4" v-autofocus /><br />
-    <span @click="increaseCounter(1)" :class="{ red: oddOrEven === 'ungerade' }"
-      >Klick mich {{ countData.count }}</span
+    <span @click="increaseCounter(1)" :class="{ red: oddOrEven() === 'ungerade' }"
+      >Klick mich {{ count }}</span
     >
   </div>
 </template>
