@@ -1,6 +1,6 @@
 <script setup>
 
-import { onMounted, ref, defineEmits } from "vue";
+import { onMounted, ref } from "vue";
 
 const observer = ref(null);
 const root = ref(null);
