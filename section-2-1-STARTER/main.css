@@ -1,0 +1,35 @@
+::-webkit-scrollbar {
+  display: none;
+}
+
+body {
+  background-color: #333;
+  color: #dedeed;
+  font-size: 22px;
+}
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+input[type="text"] {
+  margin: 10px 0;
+  display: block;
+}
+
+[v-cloak] {
+  display: none;
+}
+
+a {
+  color: #dedeed;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+}

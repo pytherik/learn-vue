@@ -1,5 +1,8 @@
 # Vue variables directives
-
+> To the browser directives are attributes.  
+> To vue these directives change how an element behaves.  
+> They can have expressions of values.  
+> 
 ### prevent rendering before parsing script
 ```css
 /* css */
@@ -54,7 +57,7 @@ right click in combination with ctrl prevent default:
   - `<div>`
     - the v-bind:key directive binds   
       all values of an iteration
-    - 
+
 ## $event object
 severel args including the `$event` obj. ('$event' is mandatory)
 ```html
